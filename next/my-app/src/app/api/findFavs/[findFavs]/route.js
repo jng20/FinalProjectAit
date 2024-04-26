@@ -20,9 +20,9 @@ import { NextResponse } from "next/server";
           const tempUser = checkUser[0]
           let ret = await tempUser.populate('favoriteFoods')
           
-          console.log(ret)
+          //console.log(ret)
           ret = ret.favoriteFoods
-          console.log(ret)
+          //console.log(ret)
           return NextResponse.json( ret);
 
         }else{

@@ -43,14 +43,14 @@ export default function Dash(){
             getFavs();
           
         }
-      }, [session, status]); 
+      }); 
     
 
    
     
 
     if (status === "authenticated") {
-        console.log(session)
+        // console.log(session)
 
         return (
             <>
