@@ -9,7 +9,15 @@ import Cards from './Cards'
 
 
 
-export default function FindFood() {
+export default function FavoriteFoods() {
+
+    const {data: session, status} = useSession(); 
+
+    if (status === "authenticated") {
+        console.log(session)
+    }else{
+        console.log('broken')
+    }
 
     const [cuisines, setCuisines] = useState([])
 
@@ -41,10 +49,6 @@ export default function FindFood() {
 
 
     const [Meals, setMeals] = useState([]);
-    const [TempMeals, setTempMeals] = useState([]);
-    const [Chosen, setChosen] = useState('');
-
-
 
     function arraysEqual(arr1, arr2) {
         if (arr1.length !== arr2.length) return false;
@@ -71,8 +75,7 @@ export default function FindFood() {
 
                 if(Meals.length === 0){
                     setMeals(data)
-                    const a = [...data]
-                    setTempMeals(a)
+                    
                     
                     
                     //console.log(Meals)
@@ -88,8 +91,8 @@ export default function FindFood() {
                         res.push(...data)
                     }
                     setMeals(res)
-                    const a = [...res]
-                    setTempMeals(a)
+                   
+                    
                     
                     
                 }
@@ -102,52 +105,100 @@ export default function FindFood() {
         }
     }
 
-    function popRandomElement(array) {
-        if (array.length === 0) {
-            return undefined; 
+    const [favFood, setFavFood] = useState('');
+    const [email, setEmail] = useState('')
+    const[err, setErr] = useState('');
+    const[success, setSuccess] = useState('');
+
+    function reset(){
+        setErr('')
+        setSuccess('')
+
+    }
+
+    async function addFavFood(f){
+        f.preventDefault();
+        console.log(favFood)
+        setEmail(session.user.email)
+        
+        //console.log('email' + email)
+        try{
+             
+            const res = await fetch('/api/favoriteFood/', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    email, favFood
+                })
+            })
+
+            if(res.ok){
+                console.log(f);
+                setSuccess('Success!')
+                const form = f.target;
+                form.reset();
+                setTimeout(reset, 3000);
+
+            }else{
+                console.log('Error during update')
+                setErr('Error during update')
+                setTimeout(reset, 3000);
+                
+            }
+
+        }catch(e){
+            console.log(e);
+            setErr('Error during update')
+            setTimeout(reset, 3000);
+            
+
         }
-        const randomIndex = Math.floor(Math.random() * array.length); 
-        const poppedElements = array.splice(randomIndex, 1); 
-        return poppedElements[0]; 
-    }
-
-    function generateFood(){
-        console.log('tempMeals ' +TempMeals)
-        setChosen(popRandomElement(TempMeals))
-
-        console.log('tempMeals after' +TempMeals)
-        console.log('Meals ' +Meals)
-
 
     }
+    
+    
 
+    
     return (
-        <div className=" bg-info">
+        <div className="bg-info ">
 
             <div className=" flex  items-center p-3 justify-between bg-primary mb-10">
                 <div className="bg-white font-bold text-black p-2 rounded-lg ">Me Hungy NYU 😤</div>
-                <div className=" bg-white text-center align-middle font-bold text-black p-2 rounded-lg"> Find Me Food</div>
+                <div className=" bg-white text-center align-middle font-bold text-black p-2 rounded-lg"> My Foods</div>
                 <div>
                     <Link href={'/dash'}><button className="  text-xl text-black font-bold p-2 border-2 border-primary  rounded-lg  bg-white hover:bg-gray-300">Home</button></Link>
                 </div>
             </div>
 
-            <div className=" flex m-10 border-t-8 border-primary rounded-md">
-                <div>
-                <button onClick={() => generateFood()} className=' bg-secondary card-body items-center text-center submit-button text-xl text-black font-bold   rounded-md mt-1 hover:bg-gray-300'>
-                    Click until you find a meal
-                </button>
+
+
+            <form onSubmit={addFavFood} >
+
+                <div className=" flex m-10 border-t-8 border-primary rounded-md">
+                    <div className=" ml-8">
+                        <button className=' bg-secondary card-body items-center text-center submit-button text-xl text-black font-bold   rounded-md mt-1 hover:bg-gray-300'>
+                            Add Food to Favorites
+                        </button>
+                    </div>
+
+                    <div className="ml-2 w-3/4">
+                        <label className=" h-full w-full text-xl input input-bordered rounded-md border-2 border-primary flex items-center p-6 bg-white">
+                            <input onChange={e => setFavFood(e.target.value)} type="text" className="grow" placeholder="Please select a cuisine first. Then copy and paste the dish name." name="FavFood" required />
+                        </label>
+                    </div>
+
+                    
                 </div>
 
-                {Chosen && (<div className=" flex-grow text-3xl font-bold p-8 rounded-lg mb-5 bg-white  text-center">
-                    {Chosen}
-                </div>)}
-                {!Chosen && (<div className=" flex-grow text-xl font-bold p-8 rounded-lg mb-5 bg-white  text-center">
-                    Select your Cuisines  
-                </div>)}
+            </form>
 
-                
-            </div>
+                    {err && (<div className=" mt-4  mb-4 p-2 rounded-lg   border-2 border-error bg-error ">
+                        <h3 className="  ml-20 mr-20 font-bold  text-white">{err}</h3>
+                    </div>)}
+
+                    {success && (<div className=" mt-4  mb-4 p-2 rounded-lg   border-2 border-success bg-success ">
+                        <h3 className="  ml-20 mr-20 font-bold  text-white">{success}</h3>
+                    </div>)}
 
 
             <div className="grid grid-cols-2 gap-2  ">
@@ -162,11 +213,7 @@ export default function FindFood() {
 
                         {cuisines.map((cuisine) => (
                             <div className="card w-auto bg-base-100 shadow-xl" key={cuisine} onClick={() => handleSubmit(cuisine)}>
-                                {/* <div className="card-body items-center text-center"> */}
-                                {/* <button onClick={() => handleSubmit(cuisine)}   className=" card-body items-center text-center submit-button text-xl text-black font-bold rounded-md border-2 border-primary  bg-white hover:bg-gray-300">
-                                        {cuisine}
-                                    </button> */}
-                                {/* onClick={() => handleSubmit(cuisine)} */}
+                                
 
                                 <Cards type={cuisine} ></Cards>
 
@@ -178,7 +225,7 @@ export default function FindFood() {
                 <div className="flex-col m-5  w-3/4">
                     <div className=" mt-5 p-8 rounded-lg mb-5 border-t-8 border-primary bg-white  text-center">
 
-                    <h1 className=" text-4xl font-bold mb-4">Popular Dishes</h1>
+                    <h1 className=" text-4xl font-bold mb-4">Dishes</h1>
                         {Meals && (
                             <ul>
                                 {Meals.map((meal, index) => (
@@ -191,6 +238,10 @@ export default function FindFood() {
 
 
             </div>
+
+            
+
         </div>
     )
+
 }

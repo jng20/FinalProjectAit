@@ -1,7 +1,7 @@
 import SuggestRestaurant from '../../components/SuggestRestaurants';
 
 
-export default function Home() {
+export default function suggestRestaurant() {
   return <main>
     <SuggestRestaurant/>
     

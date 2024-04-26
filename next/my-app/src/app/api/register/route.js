@@ -15,9 +15,13 @@ import bcrypt from 'bcryptjs';
 export async function POST(req){
     //console.log(req)
     try{
-        const{email,name,pass} = await req.json();
+        let{email,name,pass} = await req.json();
 
-        const checkUser = await User.find({username: name});
+        name = sanitize(name);
+        email = sanitize(email);
+        
+
+        const checkUser = await User.find({email: email});
         if(checkUser.length > 0){
             return NextResponse.json({message: 'User already exists'} , {status: 409});
             

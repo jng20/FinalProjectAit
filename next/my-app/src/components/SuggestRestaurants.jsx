@@ -57,10 +57,17 @@ export default function SuggestRestaurants(){
     }
 
     return (
+        <>
+        <div className=" flex w-full items-center p-3 justify-between bg-primary mb-10">
+                <div className="bg-white font-bold text-black p-2 rounded-lg ">Me Hungy NYU 😤</div>
+                <div className=" bg-white text-center align-middle font-bold text-black p-2 rounded-lg"> Suggest a Restaurant</div>
+                <div>
+                    <Link href={'/dash'}><button className="  text-xl text-black font-bold p-2 border-2 border-primary  rounded-lg  bg-white hover:bg-gray-300">Home</button></Link>
+                </div>
+            </div>
         <div className = "grid place-items-center ">
-             <Link href={'/dash'}><button className=" mt-10 text-xl text-black font-bold  border-2 border-primary rounded-full pl-4 pr-4 bg-white hover:bg-gray-300">home</button></Link>
-            
-            <div className=" mt-40 p-8 rounded-lg mb-10 border-t-8 border-primary bg-white ">
+             
+            <div className=" mt-20 p-8 rounded-lg mb-10 border-t-8 border-primary bg-white ">
                 <h1 className=" text-4xl ml-20 mr-20 font-bold ">Suggest a Restaurant</h1>
             </div>
 
@@ -81,14 +88,17 @@ export default function SuggestRestaurants(){
                 </form>
 
                 {temps && (
-                    <div className=" mt-2">
-                        <h3 className="text-4xl ml-20 mr-20 font-bold">Restaurants soon to be added to database</h3>
-                        <ul className = "ml-3">
+                    <div className=" flex-col w-auto align-middle justify-center text-center ">
+                        <h3 className="text-4xl ml-20 mr-20 mb-10 font-bold">Restaurants soon to be added to database</h3>
+                        <div className="align-middle justify-center text-center border-2 border-primary">
+                        <ul >
                             {temps.map((temp,index) => (
                                 <li key = {index}> Restaurant: {temp.name} with dishes: {temp.temp}</li> 
                             ))}
                         </ul>
-                    </div>
+                        </div>
+                     </div>
+
                     )}
             
 
@@ -97,5 +107,7 @@ export default function SuggestRestaurants(){
                  
             
         </div>
+
+        </>
     )
 }

@@ -52,7 +52,7 @@ export default function Login(){
                 </label> */}
                 <label className="input input-bordered  border-2 border-primary flex items-center gap-2 mb-2 bg-white">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-4 h-4 opacity-70"><path fillRule="evenodd" d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" clipRule="evenodd" /></svg>
-                    <input onChange={e => setPass(e.target.value)} type="password" className="grow" placeholder="Password" name="password" required minLength="8" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"/>
+                    <input onChange={e => setPass(e.target.value)} type="password" className="grow" placeholder="Password" name="password" required />
                 </label>
 
                 <button className="  text-xl  text-white font-bold mt-2 mb-4 border-2 border-primary rounded-full pl-5 pr-5 bg-primary hover:bg-gray-300">Sign In</button>

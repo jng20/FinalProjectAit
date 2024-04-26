@@ -13,7 +13,10 @@ import { NextResponse } from "next/server";
 export async function POST(req){
     //console.log(req)
     try{
-        const{name, foods} = await req.json();
+        let{name, foods} = await req.json();
+        name = sanitize(name)
+        foods = sanitize(foods)
+
 
             const temp = new TempRestaurants({
                 name : name,
@@ -35,20 +38,11 @@ export async function POST(req){
 
 export async function GET(request,context ) {
 
-
     try {
-        
-
+      
         const Temps = await TempRestaurants.find();
-
-        
         console.log(Temps)
-
         return NextResponse.json( Temps);
-
-        
-      
-      
       
     } catch (e) {
       console.log(e);

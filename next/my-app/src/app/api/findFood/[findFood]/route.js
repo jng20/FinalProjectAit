@@ -13,7 +13,7 @@ export async function GET(request, context ) {
     try {
         const {params} = context;
         console.log(params.findFood)
-        const c = params.findFood;
+        const c = sanitize(params.findFood);
 
         const foods = await Food.find({ cuisine: c }).sort({ cuisine: 1 });
 

@@ -13,7 +13,8 @@ const UserSchema = new mongoose.Schema({
   username: {type: String, required: true},     
   password: {type: String, required: true},
   email: {type: String, required: true},
-  favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Reviews' }]
+  favoriteRestaurants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Reviews' }],
+  favoriteFoods: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Food' }]
 
 });
 
@@ -26,7 +27,7 @@ const TempRestaurantsSchema = new mongoose.Schema({
 const RestaurantsSchema = new mongoose.Schema({
     name: {type: String, required: true},
     food: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Food' }],
-    reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Popular' }]
+    reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Reviews' }]
   });
 
   const FoodSchema = new mongoose.Schema({
@@ -35,9 +36,9 @@ const RestaurantsSchema = new mongoose.Schema({
   })
 
   const ReviewSchema = new mongoose.Schema({
-    restaurants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Restaurants' }],
+    restaurants: { type: mongoose.Schema.Types.ObjectId, ref: 'Restaurants' },
     description: {type: String, required: true},  // what was ordered and pricing and service ig
-    user: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     date: {type: Date, default: Date.now}
   });
 
